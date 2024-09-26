@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Decision Tree</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 40px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 2.5em;
+        }
+        button {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #555;
+        }
+        #reset {
+            display: none;
+            background-color: #6c757d;
+        }
+        #reset:hover {
+            background-color: #5a6268;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+        function showFirstTimeOptions() {
+            document.getElementById("result").innerHTML = 
+                "Would you like assistance? " +
+                "<button onclick='showSupport()'>Yes, I need help</button> " +
+                "<button onclick='proceedToUpload()'>No, I can continue</button>";
+        }
+
+        function showSupport() {
+            document.getElementById("result").innerHTML = 
+                "Please contact XCB1 or Aisha XTG1 for assistance.";
+            showResetButton();
+        }
+
+        function proceedToUpload() {
+            document.getElementById("result").innerHTML = 
+                "What would you like to upload? " +
+                "<button onclick='uploadStep(1)'>Step 1</button> " +
+                "<button onclick='uploadStep(2)'>Steps 2-5</button>";
+        }
+
+        function uploadStep(step) {
+            if (step === 1) {
+                document.getElementById("result").innerHTML = 
+                    "Do you have more than 10 concepts to upload? " +
+                    "<button onclick='hasMoreThan10Concepts(true)'>Yes, more than 10</button> " +
+                    "<button onclick='hasMoreThan10Concepts(false)'>No, less than 10</button>";
+            } else {
+                document.getElementById("result").innerHTML = 
+                    "Do you have opportunities in polygon, and has the ID for the approved segment been shared? " +
+                    "<button onclick='opportunityInPolygon(true)'>Yes</button> " +
+                    "<button onclick='opportunityInPolygon(false)'>No</button>";
+            }
+        }
+
+        function hasMoreThan10Concepts(hasMore) {
+            if (hasMore) {
+                document.getElementById("result").innerHTML = 
+                    "Since you have more than 10 concepts, please <a href='template.xlsx' download='ExcelTemplate.xlsx'>download this Excel template</a> to manage your data efficiently.";
+            } else {
+                document.getElementById("result").innerHTML = 
+                    "You may proceed with the standard upload process for fewer than 10 concepts.";
+            }
+            showResetButton();
+        }
+
+        function opportunityInPolygon(hasOpportunities) {
+            if (hasOpportunities) {
+                document.getElementById("result").innerHTML = 
+                    "Please follow the detailed Standard Operating Procedures (SOP) in the application to upload your data.";
+            } else {
+                document.getElementById("result").innerHTML = 
+                    "Ensure your data is ready, and that the approved segment ID has been shared before continuing.";
+            }
+            showResetButton();
+        }
+
+        function startDecisionTree(firstTimeUser) {
+            if (firstTimeUser) {
+                showFirstTimeOptions();
+            } else {
+                proceedToUpload();
+            }
+            hideResetButton();
+        }
+
+        function resetTree() {
+            document.getElementById("result").innerHTML = "";
+            hideResetButton();
+        }
+
+        function showResetButton() {
+            document.getElementById("reset").style.display = "block";
+        }
+
+        function hideResetButton() {
+            document.getElementById("reset").style.display = "none";
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome! Let's Get Started</h1>
+        <p>Are you a first-time user?</p>
+        <button onclick="startDecisionTree(true)">Yes, I'm new</button>
+        <button onclick="startDecisionTree(false)">No, I'm experienced</button>
+        
+        <div id="result"></div>
+        <button id="reset" onclick="resetTree()">Start Over</button>
+    </div>
+</body>
+</html>
